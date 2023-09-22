@@ -8,6 +8,9 @@ import asyncio
 import json
 import random
 from messages import LEVEL_UP_MESSAGES, NEW_ROLE_MESSAGES
+import sys
+
+sys.path.append('/home/ec2-user/jamie/') # Only required when running on a server
 
 # Load environment variables from .env file
 load_dotenv()
