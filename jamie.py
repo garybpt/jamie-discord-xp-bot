@@ -10,7 +10,9 @@ import random
 from messages import LEVEL_UP_MESSAGES, NEW_ROLE_MESSAGES
 import sys
 
-sys.path.append('/home/ec2-user/jamie/') # Only required when running on a server
+# Need to update file path structure - see ChatGPT
+
+sys.path.append('/home/ec2-user/jamie/') # Define the file path
 
 # Load environment variables from .env file
 load_dotenv()
@@ -49,7 +51,7 @@ intents.typing = False  # Disable typing events to reduce intents usage (optiona
 bot = commands.Bot(command_prefix="!", intents=intents)
 
 # Define a filename for the user XP data JSON file
-USER_XP_FILENAME = "user-xp.json"
+USER_XP_FILENAME = "/home/ec2-user/jamie/user-xp.json"
 
 # Function to save user XP data to a JSON file
 def save_user_xp():
