@@ -8,11 +8,20 @@ import asyncio
 import json
 import random
 from messages import LEVEL_UP_MESSAGES, NEW_ROLE_MESSAGES
-import sys
 
-# Need to update file path structure - see ChatGPT
+# Use os.path.join for file paths to make it platform-independent
+import os
 
-sys.path.append('/home/ec2-user/jamie/') # Define the file path
+# Define the base directory
+BASE_DIR = '/home/ec2-user/jamie/'
+
+# Define a filename for the user XP data JSON file
+USER_XP_FILENAME = os.path.join(BASE_DIR, 'user-xp.json')
+
+# Check if the directory exists; if not, create it
+directory = os.path.dirname(USER_XP_FILENAME)
+if not os.path.exists(directory):
+    os.makedirs(directory)
 
 # Load environment variables from .env file
 load_dotenv()
