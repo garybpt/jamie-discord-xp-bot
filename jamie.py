@@ -9,9 +9,6 @@ import json
 import random
 from messages import LEVEL_UP_MESSAGES, NEW_ROLE_MESSAGES
 
-# Use os.path.join for file paths to make it platform-independent
-import os
-
 # Define the base directory
 BASE_DIR = '/home/ec2-user/jamie/'
 
