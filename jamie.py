@@ -7,13 +7,15 @@ import os
 import asyncio
 import json
 import random
-from messages import LEVEL_UP_MESSAGES, NEW_ROLE_MESSAGES
 
 # Define the base directory
 BASE_DIR = '/home/ec2-user/jamie/'
 
 # Define a filename for the user XP data JSON file
 USER_XP_FILENAME = os.path.join(BASE_DIR, 'user-xp.json')
+
+# Define a filename for the messages JSON file
+MESSAGES_FILENAME = os.path.join(BASE_DIR, 'messages.json')
 
 # Check if the directory exists; if not, create it
 directory = os.path.dirname(USER_XP_FILENAME)
@@ -64,6 +66,7 @@ def save_user_xp():
     with open(USER_XP_FILENAME, "w") as file:
         json.dump(user_data, file)
 
+# Function to load user XP data from a JSON file
 def load_user_xp():
     if os.path.exists(USER_XP_FILENAME):
         with open(USER_XP_FILENAME, "r") as file:
@@ -150,7 +153,7 @@ async def on_message(message):
         user_data[author_id]["level"] += 1
 
         # Select a random level up message and replace placeholders
-        level_up_message = random.choice(LEVEL_UP_MESSAGES).format(
+        level_up_message = random.choice(get_messages("LEVEL_UP_MESSAGES")).format(
             message=message, author=message.author, user_data=user_data
         )
 
@@ -162,7 +165,7 @@ async def on_message(message):
                 role = discord.utils.get(message.guild.roles, id=role_id)
                 if role and role not in message.author.roles:
                     # Select a random new role message and replace placeholders
-                    new_role_message = random.choice(NEW_ROLE_MESSAGES).format(
+                    new_role_message = random.choice(get_messages("NEW_ROLE_MESSAGES")).format(
                         message=message, author=message.author, role=role
                     )
 
@@ -252,6 +255,19 @@ async def publish_leaderboard():
             ones_to_watch_message += "```"
 
             await channel.send(ones_to_watch_message)
+
+# Function to load messages from a JSON file
+def get_messages(message_type):
+    if os.path.exists(MESSAGES_FILENAME):
+        with open(MESSAGES_FILENAME, "r") as file:
+            try:
+                messages = json.load(file)
+                return messages.get(message_type, [])
+            except json.decoder.JSONDecodeError:
+                # Handle the case where the file is empty or contains invalid JSON
+                return []
+    else:
+        return []
 
 # Run the bot with the provided token
 bot.run(TOKEN)
