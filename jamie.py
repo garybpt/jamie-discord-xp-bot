@@ -9,7 +9,7 @@ import json
 import random
 
 # Define the base directory
-BASE_DIR = '/home/ec2-user/jamie/'
+BASE_DIR = '/Users/garybutterfield/GitHub/jamie-discord-xp-bot/'
 
 # Define a filename for the user XP data JSON file
 USER_XP_FILENAME = os.path.join(BASE_DIR, 'user-xp.json')
@@ -26,7 +26,7 @@ if not os.path.exists(directory):
 load_dotenv()
 
 # Get the bot token and role IDs from environment variables
-TOKEN = os.getenv("DISCORD_TOKEN")
+TOKEN = os.getenv("TOKEN")
 SERVER_ID = os.getenv("SERVER_ID")
 ERROR_CHANNEL_ID = int(os.getenv("ERROR_CHANNEL_ID"))
 LEADERBOARD_CHANNEL_ID = int(os.getenv("LEADERBOARD_CHANNEL_ID"))
@@ -57,9 +57,6 @@ intents = discord.Intents.default()  # Enable all default intents
 intents.typing = False  # Disable typing events to reduce intents usage (optional)
 
 bot = commands.Bot(command_prefix="!", intents=intents)
-
-# Define a filename for the user XP data JSON file
-USER_XP_FILENAME = "/home/ec2-user/jamie/user-xp.json"
 
 # Function to save user XP data to a JSON file
 def save_user_xp():
@@ -208,6 +205,9 @@ async def on_command_error(ctx, error):
     else:
         error_message = f"An error occurred: {error}"
         await log_error(error_message)
+
+    # Save user XP data after handling the error
+    save_user_xp()
 
 # Schedule the leaderboard task
 @tasks.loop(hours=168)  # Run every 7 days (once a week)
