@@ -60,8 +60,12 @@ bot = commands.Bot(command_prefix="!", intents=intents)
 
 # Function to save user XP data to a JSON file
 def save_user_xp():
-    with open(USER_XP_FILENAME, "w") as file:
-        json.dump(user_data, file)
+    try:
+        with open(USER_XP_FILENAME, "w") as file:
+            json.dump(user_data, file)
+        print("User XP data saved successfully.")
+    except Exception as e:
+        print(f"Error saving user XP data: {e}")
 
 # Function to load user XP data from a JSON file
 def load_user_xp():
@@ -118,10 +122,12 @@ async def on_ready():
 @bot.event
 async def on_message(message):
     if message.author == bot.user or message.author.bot:
+        print("Message less than 10 characters")
         return  # Skip processing messages from your bot or other bots
 
     # Check if the message length is less than 10 characters
     if len(message.content) < 10:
+        print("Message greater than 10 characters")
         await bot.process_commands(message)  # This line is necessary for cooldowns to work
         return  # Don't award XP for short messages
 
@@ -130,10 +136,12 @@ async def on_message(message):
 
     # Check if the message length is over 180 characters
     if len(message.content) > 180:
+        print("Message exceeded 180 characters")
         base_xp *= 3  # Triple the XP if the message is longer than 180 characters
 
     # Check if the message length is over 500 characters
     if len(message.content) > 500:
+        print("Message exceeded 500 characters")
         base_xp *= 5  # Triple the XP if the message is longer than 500 characters
 
     # Apply the cooldown to prevent XP gain within 5 seconds
