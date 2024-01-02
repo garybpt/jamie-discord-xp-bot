@@ -12,7 +12,7 @@ import random
 BASE_DIR = '/Users/garybutterfield/GitHub/jamie-discord-xp-bot/'
 
 # Define a filename for the user XP data JSON file
-USER_XP_FILENAME = os.path.join(BASE_DIR, 'user-xp.json')
+USER_XP_FILENAME = os.path.join(BASE_DIR, 'user_xp.json')
 
 # Define a filename for the messages JSON file
 MESSAGES_FILENAME = os.path.join(BASE_DIR, 'messages.json')
@@ -63,7 +63,7 @@ def save_user_xp():
     try:
         with open(USER_XP_FILENAME, "w") as file:
             json.dump(user_data, file)
-        print("User XP data saved successfully.")
+        print("User XP saved opened successfully.")
     except Exception as e:
         print(f"Error saving user XP data: {e}")
 
@@ -121,8 +121,8 @@ async def on_ready():
 # Event: User sends a message
 @bot.event
 async def on_message(message):
+    print("on_message event triggered.")
     if message.author == bot.user or message.author.bot:
-        print("Message less than 10 characters")
         return  # Skip processing messages from your bot or other bots
 
     # Check if the message length is less than 10 characters
@@ -179,6 +179,7 @@ async def on_message(message):
 
     # Save user XP data after each message
     save_user_xp()
+    print(f"User XP data after message: {user_data}")
 
 # Command: Check user's level
 @bot.command()
